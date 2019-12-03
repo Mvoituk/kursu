@@ -26,7 +26,7 @@ function factorial($x){
     <title>Recursion</title>
 </head>
 <body>
-<div>recu
+<div>
     <?php
     // Вывод
     echo "Факториал числа " . $n . "! = " . factorial($n);
