@@ -49,7 +49,7 @@ function makeDiagram($masiv) {
 
     foreach ($masiv as $key => $value ) {
 
-        echo "<div style='float: left; margin-right: 20px; color:" . randColor() . "; width: 50px; height:" . $value . " px;'> </div>";
+        echo "<div style='float: left; margin-right: 20px; background: " . randColor() . "; width: 50px; height: " . $value . "px;'> </div>";
 
     }
 
@@ -68,7 +68,7 @@ function makeDiagram($masiv) {
 <div class="diagram">
     <?php
     // Вывод диаграммы
-    echo makeDiagram(randArray());
+    makeDiagram(randArray());
     ?>
 </div>
 </body>
