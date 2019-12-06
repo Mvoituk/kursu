@@ -1,5 +1,5 @@
 <?php
-
+ini_set('display_errors',1);
 /*
  * Написать приложение для отображения столбчатой диаграммы,
  *      по оси X - год, начиная с 2000 до 2019, по оси Y какие-то рандомные значения от 1 до 300
@@ -47,11 +47,14 @@ return $mas;
 
 function makeDiagram($masiv) {
 
+    echo "<div style='display: flex; align-items: baseline;'>";
+
     foreach ($masiv as $key => $value ) {
 
-        echo "<div style='float: left; margin-right: 20px; background: " . randColor() . "; width: 50px; height: " . $value . "px;'> </div>";
+        echo "<div style='margin-right: 20px; background: " . randColor() . "; width: 50px; height: " . $value . "px;'> </div>";
 
     }
+    echo "</div>";
 
 }
 
