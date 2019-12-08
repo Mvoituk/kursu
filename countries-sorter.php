@@ -7,12 +7,12 @@ ini_set('display_errors',1);
 Второй параметр необязательный, и по умолчанию страны будут разделяться определенным на ваше усмотрение символом
 */
 
-$str = "Ukraine,Poland,France,Hungary,Germany";
+$str = "Ukraine, Poland, France, Austria, Hungary, Germany";
 $razd= ":";
 
 function sortuv($stroka, $razdelit='$'){
 
-    $result = explode(",", $stroka);
+    $result = explode(", ", $stroka);
 
     sort($result);
 
