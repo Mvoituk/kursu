@@ -12,7 +12,7 @@ ini_set('display_errors',1);
 */
 
 
-$str="hello world Happy!";
+$str="hello world HAppY!";
 $pezhum=rand(1, 5);
 
 function str_Converter($stroka, $rezhum){
@@ -27,21 +27,35 @@ function str_Converter($stroka, $rezhum){
             echo strtolower($stroka);
             break;
         case 3:
-//            $array=explode(" ", $stroka);
-//            strtoupper($array[0]);
-//            for ($i=1; $i<count($array); $i++){
-//                strtolower($array[$i]);
-//            }
-//            $sort_Stroka = implode(" ", $array);
-//            echo $sort_Stroka;
-            echo ucfirst($stroka);
+            $stroka=strtolower($stroka);
+            $stroka=ucfirst($stroka);
+            echo $stroka;
             break;
         case 4:
-            echo ucwords($stroka);
+            $stroka=strtolower($stroka);
+            $stroka=ucwords($stroka);
+            echo $stroka;
             break;
         case 5:
-            $stroka = mb_convert_case($stroka, MB_CASE_FOLD_SIMPLE, "UTF-8");
-            echo $stroka;
+            $str="";
+            $str1="";
+//            $stroka_new=[];
+            $stroka=str_split($stroka);
+            for ($i=0;$i<count($stroka);$i++){
+                if (ctype_upper ($stroka[$i])==true){
+//                    $stroka_new[$i]=strtolower($stroka[$i]);
+                    $str1=strtolower($stroka[$i]);
+                    $str=$str . $str1;
+                }else{
+//                    $stroka_new[$i]=strtoupper($stroka[$i]);
+                    $str1=strtoupper($stroka[$i]);
+                    $str=$str . $str1;
+                }
+            }
+//            $stroka_new = implode("", $stroka_new);
+
+//            echo $stroka_new;
+            echo $str;
             break;
     }
 
