@@ -37,25 +37,25 @@ function str_Converter($stroka, $rezhum){
             echo $stroka;
             break;
         case 5:
-            $str="";
-            $str1="";
-//            $stroka_new=[];
+//            $str="";
+//            $str1="";
+            $stroka_new=[];
             $stroka=str_split($stroka);
             for ($i=0;$i<count($stroka);$i++){
                 if (ctype_upper ($stroka[$i])==true){
-//                    $stroka_new[$i]=strtolower($stroka[$i]);
-                    $str1=strtolower($stroka[$i]);
-                    $str=$str . $str1;
+                    $stroka_new[$i]=strtolower($stroka[$i]);
+//                    $str1=strtolower($stroka[$i]);
+//                    $str=$str . $str1;
                 }else{
-//                    $stroka_new[$i]=strtoupper($stroka[$i]);
-                    $str1=strtoupper($stroka[$i]);
-                    $str=$str . $str1;
+                    $stroka_new[$i]=strtoupper($stroka[$i]);
+//                    $str1=strtoupper($stroka[$i]);
+//                    $str=$str . $str1;
                 }
             }
-//            $stroka_new = implode("", $stroka_new);
+            $stroka_new = implode("", $stroka_new);
 
-//            echo $stroka_new;
-            echo $str;
+            echo $stroka_new;
+//            echo $str;
             break;
     }
 
