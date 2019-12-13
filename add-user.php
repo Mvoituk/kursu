@@ -1,5 +1,5 @@
 <?php
-
+//ini_set('display_errors',1);
 /*
 Написать модуль добавления нового пользователя в систему.
 1. Написать форму, которая будет отправляться методом POST и будет включать следующие поля:
@@ -29,98 +29,172 @@
     "Пользователь {ИМЯ} {ФАМИЛИЯ}, {ДАТА}г. рождения, проживающий по адресу: {ОБЛАСТЬ}, г. {ГОРОД}, {АДРЕС}, был успешно добавлен в систему"
     Например, "Иванов Сергей, 22.10.1988г. рождения, проживающий по адресу: Житомирская область, г. Бердычев, ул. Пушкина, д. 21, был успешно добавлен в систему"
 */
-$oblast=[1=>"Вінницька область",2=>"Волинська область",3=>"Дніпропетровська область",4=>"Донецька область",5=>"Житомирська область",6=>"Закарпатська область",
-    7=>"Запорізька область",8=>"Івано-Франківська область",9=>"Київська область",10=>"Кіровоградська область",11=>"Луганська область",12=>"Львівська область",
-    13=>"Миколаївська область",14=>"Одеська область",15=>"Полтавська область",16=>"Рівненська область",17=>"Сумська область",18=>"Тернопільська область",19=>"Харківська область",
-    20=>"Херсонська область",21=>"Хмельницька область",22=>"Черкаська область",23=>"Чернівецька область",24=>"Чернігівська область"];
-$err=null;
+$oblast=[
+    0=>"Виберіть область",
+    1=>"Вінницька область",
+    2=>"Волинська область",
+    3=>"Дніпропетровська область",
+    4=>"Донецька область",
+    5=>"Житомирська область",
+    6=>"Закарпатська область",
+    7=>"Запорізька область",
+    8=>"Івано-Франківська область",
+    9=>"Київська область",
+    10=>"Кіровоградська область",
+    11=>"Луганська область",
+    12=>"Львівська область",
+    13=>"Миколаївська область",
+    14=>"Одеська область",
+    15=>"Полтавська область",
+    16=>"Рівненська область",
+    17=>"Сумська область",
+    18=>"Тернопільська область",
+    19=>"Харківська область",
+    20=>"Херсонська область",
+    21=>"Хмельницька область",
+    22=>"Черкаська область",
+    23=>"Чернівецька область",
+    24=>"Чернігівська область"
+];
+
+
+function filterInput($var){
+
+    return htmlspecialchars(strip_tags(trim($var)));
+}
+
+function validateString($var, $min = 2, $max = 64){
+
+    if (empty($var) || strlen($var) < $min || strlen($var) > $max) {
+        return false;
+    }
+    return true;
+}
+
+function validateRegion($region){
+    global $oblast;
+
+    if (empty(intval($region)) || !array_key_exists($region, $oblast)){
+        return false;
+    }
+    return true;
+}
+
+function validateDate($date){
+    $todey = time();
+    $timestamp = strtotime($date);
+    $year = date('Y', $timestamp);
+    if ($year<1900 || $timestamp>$todey){
+        return false;
+    }
+    return true;
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $inputLogin = $_POST['user_name'];
+    $inputLastname = $_POST['user_lastname'];
+    $inputRegion = $_POST['region'];
+    $inputCity = $_POST['city'];
+    $inputAdress = $_POST['adress'];
+    $inputDate = $_POST['date'];
+
+
+
+    $Login = filterInput($inputLogin);
+    $Lastname = filterInput($inputLastname);
+    $Region = filterInput($inputRegion);
+    $City = filterInput($inputCity);
+    $Adress = filterInput($inputAdress);
+    $Date = filterInput($inputDate);
+
+    $errors = [];
+
+    if (!validateString($Login)){
+        $errors['login'] = $Login;
+        echo 'Поле "Имя пользователя" не должно быть пустым, меньше 2 и больше 32 символов'.'<br>';
+    }
+
+    if (!validateString($Lastname)){
+        $errors['last_name'] = $Lastname;
+        echo 'Поле "Фамилия пользователя" не должно быть пустым, меньше 2 и больше 32 символов'.'<br>';
+    }
+
+    if (!validateString($City)){
+        $errors['city'] = $City;
+        echo 'Поле "Город проживания" не должно быть пустым, меньше 2 и больше 32 символов'.'<br>';
+    }
+
+    if (!validateString($Adress)){
+        $errors['adress'] = $Adress;
+        echo 'Поле "Адрес проживания" не должно быть пустым, меньше 2 и больше 32 символов'.'<br>';
+    }
+
+    if (!validateDate($Date)){
+        $errors['date'] = $Date;
+        echo 'Дата рождения должна быть корректной датой';
+    }
+//var_dump($_POST);
+//    if (!empty($errors)){
+//        var_dump($errors);
+//    }
+}
+
 ?>
+
 
 <html>
 <head>
     <title>Задача add-user</title>
     <style type='text/css'>
-        .err {
-        border-color: red
+        .error{
+            border: 7px solid red;
         }
     </style>
 </head>
 <body>
-<form method="post">
+<?php if ($_SERVER['REQUEST_METHOD'] == 'GET' || !empty($errors)){ ?>
+    <form method="post" action="">
         <label>Имя пользователя</label>
         <br>
-        <input class="<?php echo $err;?>"  type="text" name="user_name">
+        <input type="text" name="user_name" value="<?php echo $Login ?>" <?php if (array_key_exists('login', $errors)) echo 'class="error"' ?>>
         <br>
         <br>
         <label>Фамилия пользователя</label>
         <br>
-        <input class="<?php echo $err;?>" type="text" name="user_lastname">
+        <input type="text" name="user_lastname" value="<?php echo $Lastname ?>" <?php if (array_key_exists('last_name', $errors)) echo 'class="error"' ?>>
         <br>
         <br>
         <label>Область проживания</label>
         <br>
-        <select name="oblast">
+        <select name="region">
             <?php foreach ($oblast as $key=>$value){?>
-            <option value="<?php echo $key;?>"><?php echo $value;?></option>
+                <option value="<?php echo $key;?>"><?php echo $value;?></option>
             <?php } ?>
         </select>
         <br>
         <br>
         <label>Город проживания</label>
         <br>
-        <input class="<?php echo $err;?>" type="text" name="city">
+        <input type="text" name="city" value="<?php echo $City ?>" <?php if (array_key_exists('city', $errors)) echo 'class="error"' ?>>
         <br>
         <br>
         <label>Адрес проживания</label>
         <br>
-        <textarea style="height: 100px; width: 180px" name="adress"></textarea>
+        <textarea style="height: 100px; width: 180px" name="adress" <?php if (array_key_exists('adress', $errors)) echo 'class="error"' ?>><?= $Adress ?></textarea>
         <br>
         <br>
         <label>Дата рождения</label>
         <br>
-        <input type="date" name="date">
+        <input type="date" name="date" value="<?php echo $Date ?>" <?php if (array_key_exists('date', $errors)) echo 'class="error"' ?>>
         <br>
         <br>
         <br>
         <button type="submit">Отправить</button>
 
     </form>
-
-<?php if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $inputLogin = $_POST['user_name'];
-    $inputLastname = $_POST['user_lastname'];
-    $inputOblast = $_POST['oblast'];
-    $inputCity = $_POST['city'];
-    $inputAdress = $_POST['adress'];
-    $inputDate = $_POST['date'];
-
-    function filterInput($var) {
-
-        return htmlspecialchars(strip_tags(stripslashes(trim($var))));
-    }
-
-    function validateString($var, $min=2, $max=32) {
-        if (empty($var) || strlen($var) < $min || strlen($var) > $max) {
-            return false;
-        }
-        return true;
-    }
-
-    $inputLogin = filterInput($inputLogin);
-    $inputLastname = filterInput($inputLastname);
-    $inputOblast = filterInput($inputOblast);
-    $inputCity = filterInput($inputCity);
-    $inputAdress = filterInput($inputAdress);
-    $inputDate = filterInput($inputDate);
-
-    if (validateString($inputLogin)==false || validateString($inputLastname)==false || validateString($inputCity)==false){
-        echo "Поле не должно быть пустым, меньше 2 и больше 32 символов";
-        $err = "err";
-    }
-    $err = null;
-
-}
-?>
+<?php } else { ?>
+    <h4>Пользователь <?= $Login ?> <?= $Lastname ?>, <?= date('d.m.Y', strtotime($Date)) ?>г. рождения, проживающий по адресу: <?= $oblast[$Region] ?>, г. <?= $City ?>, <?= $Adress ?>, был успешно добавлен в систему</h4>
+<?php } ?>
 </body>
 </html>
