@@ -1,1 +1,1 @@
-<?php
+<div class="menu"</div>
