@@ -5,9 +5,20 @@
 2. При выборе темы (клике на ссылку) установить куку в браузере
 3. Отображать страницу при последующих запросах с соответствующей темой
 */
+//var_dump($_COOKIE);
+//if ($_COOKIE['theme']=='dark'){
+//    $day_night='night';
+//} else {
+//    $day_night='day';
+//}
 
-$time=date('H');
-$day_night=$time<18 ? 'day' : 'night';
+if ($_GET['theme'] == 'dark'){
+    setcookie('theme', 'dark');
+    $day_night='night';
+} else {
+    setcookie('theme', 'light');
+    $day_night='day';
+}
 
 ?>
 
@@ -17,22 +28,22 @@ $day_night=$time<18 ? 'day' : 'night';
 <head>
     <title>Конструкция if</title>
     <style>
-        body.dark {
+        body.night {
             background-color: #202020;
             color: #ffffff;
         }
-        body.light {
+        body.day {
             background-color: #ffffff;
             color: #202020;
         }
     </style>
 </head>
 <body class="<?php echo $day_night ?>">
+
+<a href="cookie.php?theme=dark">dark</a>
+<a href="cookie.php?theme=light">light</a>
+
 <h1>Основы языка PHP</h1>
-
-<a href="cookie.php?theame=dark">dark</a>
-<a href="cookie.php?theame=light">light</a>
-
 <p>
 
     PHP, расшифровывающийся как "PHP: Hypertext Preprocessor" - «PHP: Препроцессор Гипертекста»,
