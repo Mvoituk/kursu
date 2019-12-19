@@ -5,19 +5,17 @@
 2. При выборе темы (клике на ссылку) установить куку в браузере
 3. Отображать страницу при последующих запросах с соответствующей темой
 */
-//var_dump($_COOKIE);
-//if ($_COOKIE['theme']=='dark'){
-//    $day_night='night';
-//} else {
-//    $day_night='day';
-//}
+
 
 if ($_GET['theme'] == 'dark'){
     setcookie('theme', 'dark');
-    $day_night='night';
-} else {
-    setcookie('theme', 'light');
-    $day_night='day';
+    $day_night='dark';
+} elseif ($_GET['theme'] == 'light') {
+        setcookie('theme', 'light');
+        $day_night = 'light';
+
+} elseif (!empty($_COOKIE['theme'])) {
+    $day_night=$_COOKIE['theme'];
 }
 
 ?>
@@ -28,11 +26,11 @@ if ($_GET['theme'] == 'dark'){
 <head>
     <title>Конструкция if</title>
     <style>
-        body.night {
+        body.dark {
             background-color: #202020;
             color: #ffffff;
         }
-        body.day {
+        body.light {
             background-color: #ffffff;
             color: #202020;
         }
