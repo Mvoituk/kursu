@@ -74,7 +74,7 @@ function validateString($var, $min = 2, $max = 64){
 function validateRegion($region){
     global $oblast;
 
-    if (empty(intval($region)) || !array_key_exists($region, $oblast)){
+    if (empty(intval($region)) || !array_key_exists($region, $oblast) || $region == 0){
         return false;
     }
     return true;
@@ -134,6 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['date'] = $Date;
         echo 'Дата рождения должна быть корректной датой';
     }
+
+    if (!validateRegion($Region)){
+        $errors['region'] = $Region;
+        echo 'Значение области должно быть корректным';
+    }
 //var_dump($_POST);
 //    if (!empty($errors)){
 //        var_dump($errors);
@@ -167,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <br>
         <label>Область проживания</label>
         <br>
-        <select name="region">
+        <select name="region" <?php if (array_key_exists('region', $errors)) echo 'class="error"' ?>>
             <?php foreach ($oblast as $key=>$value){?>
                 <option value="<?php echo $key;?>"><?php echo $value;?></option>
             <?php } ?>
