@@ -1,4 +1,5 @@
 <?php
+//ini_set('display_errors',1);
 function filterInput($var){
 
 return htmlspecialchars(strip_tags(trim($var)));
@@ -10,6 +11,19 @@ if (empty($var) || strlen($var) < $min || strlen($var) > $max) {
 return false;
 }
 return true;
+}
+
+function validateFile(){
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_FILES["foto"])) {
+
+    $whitelist = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
+
+        if (in_array($_FILES['foto']['type'], $whitelist)) {
+
+        return true;
+    }
+}
+    return false;
 }
 
 function validateDate($date){
@@ -35,7 +49,6 @@ $inputCity = $_POST['city'];
 $inputPereezd = $_POST['pereezd'];
 
 
-
 $Login = filterInput($inputLogin);
 $Profession = filterInput($inputProfession);
 $Tel = filterInput($inputTel);
@@ -45,6 +58,7 @@ $Date = filterInput($inputDate);
 $Stazh = filterInput($inputStazh);
 $City = filterInput($inputCity);
 $Pereezd = filterInput($inputPereezd);
+$Foto = $_FILES['foto'];
 
 $errors = [];
 
@@ -87,9 +101,22 @@ if (!validateDate($Date)){
 $errors['date'] = $Date;
 echo 'Дата рождения должна быть корректной датой';
 }
+
+if (!validateFile()){
+        $errors['foto'] = $Foto;
+        echo 'Файл неправильного формата (допустимые форматы jpeg, gif, png)';
+} else {
+    $fileFrom = "/home/mison/Загрузки/" . $_FILES['foto']['name'];
+    $fileName = $_SERVER['DOCUMENT_ROOT'] . "/git/resume/page/images/" . $_FILES['foto']['name'];
+    if (copy($fileFrom, $fileName)) {
+        echo "Файл " . $_FILES['foto']['name'] . " успешно загружен";
+    } else {
+        echo "файл не загружен";
+    }
+}
 //var_dump($_POST);
 //    if (!empty($errors)){
-//        var_dump($errors);
+//        print_r($errors);
 //    }
 }
 
@@ -110,10 +137,10 @@ echo 'Дата рождения должна быть корректной да�
 <br>
 <h1>Резюме</h1>
 <?php if ($_SERVER['REQUEST_METHOD'] == 'GET' || !empty($errors)){ ?>
-    <form method="post" action="">
+    <form method="post" action="" enctype="multipart/form-data">
         <label>ФИО</label>
         <br>
-        <input type="text" <?php if ($_GET['rezhum'] == 'view') echo 'readonly'?> name="user_name" value="<?php echo $Login ?>"
+        <input type="text" name="user_name" value="<?php echo $Login ?>"
             <?php if (array_key_exists('login', $errors)) echo 'class="error"' ?>>
         <br>
         <br>
@@ -157,13 +184,36 @@ echo 'Дата рождения должна быть корректной да�
         <input type="text" name="pereezd" value="<?php echo $Pereezd ?>" <?php if (array_key_exists('pereezd', $errors)) echo 'class="error"' ?>>
         <br>
         <br>
+        <label>Фото</label>
+        <br>
+        <input type="file" name="foto" <?php if (array_key_exists('foto', $errors)) echo 'class="error"' ?>>
+        <br>
+        <br>
         <br>
         <button type="submit">Отправить</button>
 
 
     </form>
-<?php } else { ?>
-    <h4>Пользователь <?= $Login ?> <?= $Profession ?>, <?= date('d.m.Y', strtotime($Date)) ?>г. рождения, проживающий по адресу: г. <?= $City ?>, был успешно добавлен в резюме</h4>
-<?php } ?>
+<?php } else {
+    $resume = [
+        'user_name' => $Login,
+        'user_profession' => $Profession,
+        'tel' => $Tel,
+        'mail' => $Mail,
+        'zarplata' => $Zarplata,
+        'date' => $Date,
+        'stazh' => $Stazh,
+        'city' => $City,
+        'pereezd' => $Pereezd,
+        'photo' => $fileName
+    ];
+}
+
+print_r($resume);
+//print_r($_FILES['foto']);
+//print_r($_FILES["foto"]["tmp_name"]);
+//print_r($_SERVER['DOCUMENT_ROOT']);
+?>
+
 </body>
 </html>

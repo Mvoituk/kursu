@@ -26,8 +26,12 @@
 
 include "menu_res.php";
 
+?>
+
+<?php
+
 $pages = $_GET['rezhum'] ? $_GET['rezhum'] : 'view';
-$files = '/page' . $pages . '.php';
+$files = 'page/' . $pages . '.php';
 if (file_exists($files)){
     include $files;
 } else {
