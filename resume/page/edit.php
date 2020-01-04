@@ -1,5 +1,5 @@
 <?php
-//ini_set('display_errors',1);
+
 function filterInput($var){
 
 return htmlspecialchars(strip_tags(trim($var)));
@@ -34,6 +34,17 @@ if ($year<1900 || $timestamp>$todey){
 return false;
 }
 return true;
+}
+
+function saveJson($file, $array)
+{
+    $json = json_encode($array, JSON_UNESCAPED_UNICODE);
+
+    $f = fopen($file, 'w');
+
+    fwrite($f, $json);
+
+    fclose($f);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -114,10 +125,7 @@ if (!validateFile()){
         echo "файл не загружен";
     }
 }
-//var_dump($_POST);
-//    if (!empty($errors)){
-//        print_r($errors);
-//    }
+
 }
 
 ?>
@@ -125,18 +133,18 @@ if (!validateFile()){
 
 <html>
 <head>
-    <title>Resume</title>
+    <title>Резюме</title>
     <style type='text/css'>
         .error{
             border: 7px solid red;
         }
 
     </style>
+</head>
 <body>
-
 <br>
-<h1>Резюме</h1>
 <?php if ($_SERVER['REQUEST_METHOD'] == 'GET' || !empty($errors)){ ?>
+    <h1>Резюме</h1>
     <form method="post" action="" enctype="multipart/form-data">
         <label>ФИО</label>
         <br>
@@ -191,8 +199,6 @@ if (!validateFile()){
         <br>
         <br>
         <button type="submit">Отправить</button>
-
-
     </form>
 <?php } else {
     $resume = [
@@ -207,13 +213,10 @@ if (!validateFile()){
         'pereezd' => $Pereezd,
         'photo' => $fileName
     ];
+    saveJson('users.txt', $resume);
+    echo "Резюме успешно сохранено";
 }
 
-print_r($resume);
-//print_r($_FILES['foto']);
-//print_r($_FILES["foto"]["tmp_name"]);
-//print_r($_SERVER['DOCUMENT_ROOT']);
 ?>
-
 </body>
 </html>
