@@ -1,1 +1,1 @@
-{"user_name":"Войтюк Михаил Викторович","user_profession":"Програміст PHP","tel":"0967093807","mail":"mison4uk@gmail.com","zarplata":"90000","date":"1983-08-27","stazh":"9","city":"Київ","pereezd":"нет","photo":"\/home\/mison\/www\/my-project.loc\/git\/resume\/page\/images\/94_main.jpg"}
+{"user_name":"Михайло","user_profession":"Програміст PHP","tel":"0967093807","mail":"mison4uk@gmail.com","zarplata":"02137","date":"2020-01-03","stazh":"9","city":"Київ","pereezd":"нет","photo":"\/home\/mison\/www\/my-project.loc\/git\/resume\/page\/images\/94_main.jpg"}

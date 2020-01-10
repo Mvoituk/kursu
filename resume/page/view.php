@@ -92,8 +92,8 @@ $users = readJson('users.txt');
                 ?>
             </p>
         </div>
-        <div class="avatar float-left">
-            <img src=<?php echo '"' . $users['photo'] . '"'; ?>>
+        <div>
+            <img src="<?php echo $users['photo']; ?>">
         </div>
     </div>
 </div>
