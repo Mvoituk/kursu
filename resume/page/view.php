@@ -93,7 +93,7 @@ $users = readJson('users.txt');
             </p>
         </div>
         <div>
-            <img src="<?php echo $users['photo']; ?>">
+            <img src="<?php echo str_replace($_SERVER['DOCUMENT_ROOT'], '', $users['photo']); ?>">
         </div>
     </div>
 </div>
